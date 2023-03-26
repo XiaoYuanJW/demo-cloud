@@ -1,0 +1,19 @@
+server:
+  port: 7003
+
+spring:
+  application:
+    name: eureka-server
+  security:
+    user:
+      name: admin
+      password: 123456
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://admin:123456@localhost:7001/eureka/, http://admin:123456@localhost:7002/eureka/
+    fetch-registry: true
+    register-with-eureka: true

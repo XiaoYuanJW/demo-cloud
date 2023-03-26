@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: demo-order # 服务名称
+  profiles:
+    active: dev # 开发环境
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 1.117.34.49:8848 # Nacos 地址
+      config:
+        server-addr: 1.117.34.49:8848 # Nacos地址
+        file-extension: yaml # 获取的yaml格式的配置

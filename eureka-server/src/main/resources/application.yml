@@ -1,0 +1,19 @@
+server:
+  port: 7001 #指定运行端口
+
+spring:
+  application:
+    name: eureka-server #指定服务名称
+  security:
+    user:
+      name: admin
+      password: 123456
+
+eureka:
+  instance:
+    hostname: localhost #指定主机地址
+  client:
+    serviceUrl:
+      defaultZone: http://admin:123456@localhost:7002/eureka/, http://admin:123456@localhost:7003/eureka/ #注册到另一个Eureka注册中心
+    fetch-registry: true #指定是否要从注册中心获取服务
+    register-with-eureka: true #指定是否要注册到注册中心

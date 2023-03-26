@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: demo-order
+  profiles:
+    active: dev # 默认为开发环境
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jackson:
+    default-property-inclusion: non_null # JSON处理时忽略非空字段
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+    - classpath*:com/**/mapper/*.xml
+  type-aliases-package: com.example.demo.entity, com.example.demo.dto, com.example.demo.domain
+  configuration:
+    call-setters-on-nulls: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+mybatis-plus:
+  # 指定包别名
+  type-aliases-package: com.example.demo.entity, com.example.demo.dto, com.example.demo.domain
+  # 加载全局的配置文件
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: AUTO
+      logic-delete-field: is_delete
+      logic-not-delete-value: 0
+      logic-delete-value: 1
+
+springfox:
+  documentation:
+    enabled: true
+
+# 禁止actuator监控redis连接
+management:
+  health:
+    redis:
+      enabled: false
+
+jwt:
+  tokenHeader: Authorization # JWT存储的请求头
+  tokenHead: 'Bearer ' # JWT负载中的开头
+  secret: demo-portal-secret # JWT加解密使用的密钥
+  expiration: 604800 # JWT的超期限时间(60*60*24*7)
