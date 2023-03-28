@@ -16,6 +16,6 @@ public interface UserService {
     @GetMapping(value = "/member/{id}")
     CommonResult detail(@PathVariable Long id);
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/member/update")
     CommonResult update(@RequestBody UmsMember umsMember);
 }

@@ -9,10 +9,12 @@ import com.example.demo.domain.OmsOrderDetail;
 import com.example.demo.entity.OmsOrder;
 import com.example.demo.entity.PmsProduct;
 import com.example.demo.entity.UmsMember;
+import com.example.demo.exception.ServiceException;
 import com.example.demo.feign.ProductService;
 import com.example.demo.feign.UserService;
 import com.example.demo.mapper.OmsOrderMapper;
 import com.example.demo.service.OmsOrderService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,7 +48,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             UmsMember umsMember = BeanUtil.toBean(userResult.getData(), UmsMember.class);
             omsOrderDetail.setUmsMember(umsMember);
             // 获取商品信息
-            CommonResult productResult = productService.detail(omsOrder.getMemberId());
+            CommonResult productResult = productService.detail(omsOrder.getProductId());
             PmsProduct pmsProduct = BeanUtil.toBean(productResult.getData(), PmsProduct.class);
             omsOrderDetail.setPmsPorduct(pmsProduct);
             return omsOrderDetail;
@@ -55,26 +57,30 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
     }
 
     @Override
+    @GlobalTransactional
     public int insert(OmsOrder omsOrder) {
+        // 商品信息校验
         CommonResult productResult = productService.detail(omsOrder.getProductId());
         if (ObjectUtil.isNull(productResult.getData())) {
-            throw new RuntimeException("商品信息存在异常");
+            throw new ServiceException("商品信息存在异常");
         }
         // 商品库存扣减
         PmsProduct pmsProduct = BeanUtil.toBean(productResult.getData(), PmsProduct.class);
         pmsProduct.setStock(pmsProduct.getStock() - 1);
         productService.update(pmsProduct);
-
+        // 用户信息校验
         CommonResult userResult = userService.detail(omsOrder.getMemberId());
         if (ObjectUtil.isNull(userResult.getData())) {
-            throw new RuntimeException("用户信息存在异常");
+            throw new ServiceException("用户信息存在异常");
         }
         // 用户余额扣减
         UmsMember umsMember = BeanUtil.toBean(userResult.getData(), UmsMember.class);
+        if (umsMember.getAccount().compareTo(pmsProduct.getPrice()) < 0) {
+            throw new ServiceException("用户余额不足");
+        }
         umsMember.setAccount(NumberUtil.sub(umsMember.getAccount(), pmsProduct.getPrice()));
         userService.update(umsMember);
         // 新增订单信息
-        int count = omsOrderMapper.insert(omsOrder);
-        return count;
+        return omsOrderMapper.insert(omsOrder);
     }
 }

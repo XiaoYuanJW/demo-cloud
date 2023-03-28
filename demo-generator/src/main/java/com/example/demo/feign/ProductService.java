@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(value = "demo-product", fallback = ProductFallbackService.class)
 public interface ProductService {
     @GetMapping(value = "/product/{id}")
+    CommonResult detail(@PathVariable Long id);
+
+    @GetMapping(value = "/product/update")
     CommonResult update(@RequestBody PmsProduct pmsProduct);
 
-    @GetMapping(value = "/{id}")
-    public CommonResult detail(@PathVariable Long id);
+
 }
