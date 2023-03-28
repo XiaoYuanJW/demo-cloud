@@ -3,10 +3,12 @@ package com.example.demo.feign.impl;
 import com.example.demo.api.CommonResult;
 import com.example.demo.entity.PmsProduct;
 import com.example.demo.feign.ProductService;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by YuanJW on 2023/2/24.
  */
+@Component
 public class ProductFallbackService implements ProductService {
     @Override
     public CommonResult update(PmsProduct pmsProduct) {

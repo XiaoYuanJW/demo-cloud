@@ -14,7 +14,6 @@ import com.example.demo.feign.UserService;
 import com.example.demo.mapper.OmsOrderMapper;
 import com.example.demo.service.OmsOrderService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
@@ -25,8 +24,8 @@ import javax.annotation.Resource;
 public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> implements OmsOrderService {
     @Resource
     private OmsOrderMapper omsOrderMapper;
-    @Resource
-    private RestTemplate restTemplate;
+//    @Resource
+//    private RestTemplate restTemplate;
     @Resource
     private UserService userService;
     @Resource
