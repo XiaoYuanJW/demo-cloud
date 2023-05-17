@@ -1,8 +1,8 @@
 package com.example.demo.feign;
 
 import com.example.demo.api.CommonResult;
-import com.example.demo.entity.UmsMember;
-import com.example.demo.feign.impl.UserFallbackService;
+import com.example.demo.entity.PmsProduct;
+import com.example.demo.feign.impl.ProductClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 /**
  * Created by YuanJW on 2023/2/21.
  */
-@FeignClient(value = "demo-user", fallback = UserFallbackService.class)
-public interface UserService {
-    @GetMapping(value = "/member/{id}")
+@FeignClient(value = "demo-product", fallback = ProductClientFallbackFactory.class, contextId = "product-service")
+public interface ProductClient {
+    @GetMapping(value = "/product/{id}")
     CommonResult detail(@PathVariable Long id);
 
-    @GetMapping(value = "/member/update")
-    CommonResult update(@RequestBody UmsMember umsMember);
+    @GetMapping(value = "/product/update")
+    CommonResult update(@RequestBody PmsProduct pmsProduct);
 }

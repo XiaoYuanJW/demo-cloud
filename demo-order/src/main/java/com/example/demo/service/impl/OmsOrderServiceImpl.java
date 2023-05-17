@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.api.CommonResult;
@@ -10,8 +9,8 @@ import com.example.demo.entity.OmsOrder;
 import com.example.demo.entity.PmsProduct;
 import com.example.demo.entity.UmsMember;
 import com.example.demo.exception.ServiceException;
-import com.example.demo.feign.ProductService;
-import com.example.demo.feign.UserService;
+import com.example.demo.feign.ProductClient;
+import com.example.demo.feign.UserClient;
 import com.example.demo.mapper.OmsOrderMapper;
 import com.example.demo.service.OmsOrderService;
 import io.seata.spring.annotation.GlobalTransactional;
@@ -26,12 +25,12 @@ import javax.annotation.Resource;
 public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> implements OmsOrderService {
     @Resource
     private OmsOrderMapper omsOrderMapper;
-//    @Resource
+    //    @Resource
 //    private RestTemplate restTemplate;
     @Resource
-    private UserService userService;
+    private UserClient userClient;
     @Resource
-    private ProductService productService;
+    private ProductClient productService;
 
     @Override
     public OmsOrderDetail detail(Long id) {
@@ -44,7 +43,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
 //            UmsMember umsMember = BeanUtil.toBean(commonResult.getData(), UmsMember.class);
 
             // 使用openFeign进行服务的远程调用,获取用户信息
-            CommonResult userResult = userService.detail(omsOrder.getMemberId());
+            CommonResult userResult = userClient.detail(omsOrder.getMemberId());
             UmsMember umsMember = BeanUtil.toBean(userResult.getData(), UmsMember.class);
             omsOrderDetail.setUmsMember(umsMember);
             // 获取商品信息
@@ -68,18 +67,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         PmsProduct pmsProduct = BeanUtil.toBean(productResult.getData(), PmsProduct.class);
         pmsProduct.setStock(pmsProduct.getStock() - 1);
         productService.update(pmsProduct);
-        // 用户信息校验
-        CommonResult userResult = userService.detail(omsOrder.getMemberId());
-        if (ObjectUtil.isNull(userResult.getData())) {
-            throw new ServiceException("用户信息存在异常");
-        }
-        // 用户余额扣减
-        UmsMember umsMember = BeanUtil.toBean(userResult.getData(), UmsMember.class);
-        if (umsMember.getAccount().compareTo(pmsProduct.getPrice()) < 0) {
-            throw new ServiceException("用户余额不足");
-        }
-        umsMember.setAccount(NumberUtil.sub(umsMember.getAccount(), pmsProduct.getPrice()));
-        userService.update(umsMember);
+        // 调用用户服务扣减库存
+        userClient.deduct(omsOrder.getMemberId(), pmsProduct.getPrice());
         // 新增订单信息
         return omsOrderMapper.insert(omsOrder);
     }

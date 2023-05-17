@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * Created by YuanJW on 2023/2/15.
@@ -40,6 +41,16 @@ public class UmsMemberController {
     @GetMapping(value = "/update", produces = "application/json;charset=UTF-8")
     public CommonResult update(@RequestBody UmsMember umsMember) {
         int count = umsMemberService.updateUmsMember(umsMember);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation(value = "扣减会员余额")
+    @PostMapping(value = "deduct", produces = "application/json;charset=UTF-8")
+    public CommonResult deduct(Long memberId, BigDecimal deduction) {
+        int count = umsMemberService.deduct(memberId, deduction);
         if (count > 0) {
             return CommonResult.success(count);
         }

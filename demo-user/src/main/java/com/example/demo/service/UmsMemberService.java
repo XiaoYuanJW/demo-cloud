@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.demo.entity.UmsMember;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -32,8 +33,26 @@ public interface UmsMemberService extends IService<UmsMember> {
 
     /**
      * 更新用户信息
+     *
      * @param umsMember
      * @return
      */
     int updateUmsMember(UmsMember umsMember);
+
+    /**
+     * 扣减用户余额
+     *
+     * @param memberId
+     * @param deduction
+     */
+    int deduct(Long memberId, BigDecimal deduction);
+
+    /**
+     * 回滚用户金额
+     *
+     * @param memberId
+     * @param deduction
+     * @return
+     */
+    int refund(Long memberId, BigDecimal deduction);
 }

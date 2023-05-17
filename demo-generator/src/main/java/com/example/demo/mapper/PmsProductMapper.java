@@ -1,10 +1,11 @@
 package com.example.demo.mapper;
 
-import com.example.demo.entity.PmsProduct;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.demo.entity.PmsProduct;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
 
 /**
 * PmsProductMapper

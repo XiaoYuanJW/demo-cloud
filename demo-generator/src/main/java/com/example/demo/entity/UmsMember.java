@@ -103,7 +103,7 @@ public class UmsMember extends BaseEntity {
     @NotNull(message = "[积分]不能为空")
     @ApiModelProperty(value = "积分")
     private Integer integration;
-    
+
     @NotNull(message = "[历史积分值]不能为空")
     @ApiModelProperty(value = "历史积分值")
     private Integer historyIntegration;
@@ -111,4 +111,8 @@ public class UmsMember extends BaseEntity {
     @NotNull(message = "[余额]不能为空")
     @ApiModelProperty(value = "余额")
     private BigDecimal account;
+
+    public boolean vaildAccount(BigDecimal deduction) {
+        return account.compareTo(deduction) >= 0;
+    }
 }

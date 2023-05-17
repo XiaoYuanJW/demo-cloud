@@ -1,14 +1,19 @@
 package com.example.demo.desensitization;
 
 import cn.hutool.core.util.DesensitizedUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.function.Function;
 
 /**
  * 敏感字段枚举
+ * <p>
  * Created by YuanJW on 2022/12/5.
  */
-public enum SensitiveStrategy {
+@Getter
+@AllArgsConstructor
+public enum SensitiveStrategyEnum {
     /**
      * 中文名
      */
@@ -39,12 +44,4 @@ public enum SensitiveStrategy {
     BANK_CARD(s -> DesensitizedUtil.bankCard(s));
 
     private final Function<String, String> desensitizer;
-
-    SensitiveStrategy(Function<String, String> desensitizer) {
-        this.desensitizer = desensitizer;
-    }
-
-    public Function<String, String> desensitizer() {
-        return desensitizer;
-    }
 }

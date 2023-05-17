@@ -16,17 +16,18 @@ import java.util.Objects;
  */
 public class SensitiveDataSerialize extends JsonSerializer<String>
         implements ContextualSerializer {
-    private SensitiveStrategy sensitiveStrategy;
+    private SensitiveStrategyEnum sensitiveStrategyEnum;
 
     public SensitiveDataSerialize() {
     }
 
-    public SensitiveDataSerialize(final SensitiveStrategy sensitiveStrategy) {
-        this.sensitiveStrategy = sensitiveStrategy;
+    public SensitiveDataSerialize(final SensitiveStrategyEnum sensitiveStrategyEnum) {
+        this.sensitiveStrategyEnum = sensitiveStrategyEnum;
     }
 
     /**
      * 自定义序列化
+     *
      * @param s
      * @param jsonGenerator
      * @param serializerProvider
@@ -34,7 +35,7 @@ public class SensitiveDataSerialize extends JsonSerializer<String>
      */
     @Override
     public void serialize(String s, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeString(sensitiveStrategy.desensitizer().apply(s));
+        jsonGenerator.writeString(sensitiveStrategyEnum.desensitizer().apply(s));
     }
 
     /**

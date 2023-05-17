@@ -4,7 +4,7 @@ package com.example.demo.constants;
  * 会员信息常量
  * Created by YuanJW on 2022/12/4.
  */
-public interface UmsMemberConstant {
+public interface UmsMemberConsts {
     public class Member {
         // 验证码
         public static final String AUTH_CODE = "auth_code_";
