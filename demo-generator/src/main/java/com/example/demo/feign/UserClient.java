@@ -22,5 +22,5 @@ public interface UserClient {
     CommonResult update(@RequestBody UmsMember umsMember);
 
     @PostMapping(value = "deduct")
-    CommonResult deduct(@RequestBody MemberDeductDTO memberDeductDTO)
+    CommonResult deduct(@RequestBody MemberDeductDTO memberDeductDTO);
 }

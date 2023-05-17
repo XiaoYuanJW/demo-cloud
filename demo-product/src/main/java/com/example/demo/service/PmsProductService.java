@@ -36,5 +36,5 @@ public interface PmsProductService extends IService<PmsProduct> {
      * @param deduction
      * @return
      */
-    int deduct(Long productId, Long deduction);
+    int deduct(Long productId, Integer deduction);
 }

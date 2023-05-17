@@ -80,7 +80,7 @@ public class PmsProduct extends BaseEntity {
     @Length(max = -1, message = "编码长度不能超过-1")
     @ApiModelProperty(value = "商品描述")
     private String description;
-    
+
     @ApiModelProperty(value = "商品库存")
     private Integer stock;
 
@@ -88,7 +88,11 @@ public class PmsProduct extends BaseEntity {
     @Length(max = 16, message = "编码长度不能超过16")
     @ApiModelProperty(value = "商品单位")
     private String unit;
-    
+
     @ApiModelProperty(value = "商品重量，默认为克")
     private BigDecimal weight;
+
+    public boolean vaildStock(Integer deduction) {
+        return this.stock.compareTo(deduction) > 0;
+    }
 }

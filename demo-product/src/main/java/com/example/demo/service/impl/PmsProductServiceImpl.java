@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.entity.PmsProduct;
@@ -33,11 +34,14 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     }
 
     @Override
-    public int deduct(Long productId, Long deduction) {
+    public int deduct(Long productId, Integer deduction) {
+        PmsProduct pmsProduct = pmsProductMapper.selectById(productId);
+        Assert.notNull(productId, "商品不存在！");
+        Assert.isTrue(pmsProduct.vaildStock(deduction), "商品库存不足！");
         return pmsProductMapper.update(
                 null,
                 new LambdaUpdateWrapper<PmsProduct>()
-                        .setSql("stock = stock - 1")
+                        .setSql("stock = stock - " + deduction)
                         .eq(PmsProduct::getId, productId)
         );
     }
