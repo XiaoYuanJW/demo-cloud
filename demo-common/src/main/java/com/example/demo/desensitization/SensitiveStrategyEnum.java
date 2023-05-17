@@ -44,4 +44,8 @@ public enum SensitiveStrategyEnum {
     BANK_CARD(s -> DesensitizedUtil.bankCard(s));
 
     private final Function<String, String> desensitizer;
+
+    public Function<String, String> desensitizer() {
+        return desensitizer;
+    }
 }
