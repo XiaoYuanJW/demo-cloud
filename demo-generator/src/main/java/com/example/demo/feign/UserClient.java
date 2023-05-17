@@ -14,14 +14,14 @@ import java.math.BigDecimal;
 /**
  * Created by YuanJW on 2023/2/21.
  */
-@FeignClient(value = "demo-user", fallback = UserClientFallbackFactory.class, contextId = "user-service")
+@FeignClient(value = "demo-user", path = "/member", fallback = UserClientFallbackFactory.class, contextId = "user-service")
 public interface UserClient {
-    @GetMapping(value = "/member/{id}")
+    @GetMapping(value = "/{id}")
     CommonResult detail(@PathVariable Long id);
 
-    @GetMapping(value = "/member/update")
+    @GetMapping(value = "/update")
     CommonResult update(@RequestBody UmsMember umsMember);
 
     @PostMapping(value = "deduct")
-    public CommonResult deduct(Long memberId, BigDecimal deduction);
+    CommonResult deduct(Long memberId, BigDecimal deduction);
 }
