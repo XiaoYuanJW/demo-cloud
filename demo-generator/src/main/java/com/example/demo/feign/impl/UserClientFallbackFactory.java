@@ -1,13 +1,12 @@
 package com.example.demo.feign.impl;
 
 import com.example.demo.api.CommonResult;
+import com.example.demo.dto.MemberDeductDTO;
 import com.example.demo.entity.UmsMember;
 import com.example.demo.feign.UserClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
 
 /**
  * Created by YuanJW on 2023/2/22.
@@ -31,7 +30,7 @@ public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
             }
 
             @Override
-            public CommonResult deduct(Long memberId, BigDecimal deduction) {
+            public CommonResult deduct(MemberDeductDTO memberDeductDTO) {
                 return CommonResult.failed("调用失败，服务被降级");
             }
         };

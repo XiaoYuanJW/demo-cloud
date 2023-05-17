@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.example.demo.api.CommonResult;
 import com.example.demo.api.ResultCode;
 import com.example.demo.client.FeignUserService;
+import com.example.demo.dto.MemberDeductDTO;
 import com.example.demo.entity.UmsMember;
 import com.example.demo.feign.UserClient;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,7 @@ public class FeignUserServiceImpl implements FeignUserService {
 
     @Override
     public int deduct(Long memberId, BigDecimal deduction) {
-        CommonResult result = userClient.deduct(memberId, deduction);
+        CommonResult result = userClient.deduct(new MemberDeductDTO(memberId, deduction));
         if (Objects.equals(ResultCode.FAILED.getCode(), result.getCode()) ||
                 Objects.isNull(result.getData())) {
             return 0;

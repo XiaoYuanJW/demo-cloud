@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.api.CommonResult;
+import com.example.demo.dto.MemberDeductDTO;
 import com.example.demo.entity.UmsMember;
 import com.example.demo.service.UmsMemberService;
 import io.swagger.annotations.Api;
@@ -8,7 +9,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 
 /**
  * Created by YuanJW on 2023/2/15.
@@ -49,8 +49,8 @@ public class UmsMemberController {
 
     @ApiOperation(value = "扣减会员余额")
     @PostMapping(value = "deduct", produces = "application/json;charset=UTF-8")
-    public CommonResult deduct(Long memberId, BigDecimal deduction) {
-        int count = umsMemberService.deduct(memberId, deduction);
+    public CommonResult deduct(@RequestBody MemberDeductDTO memberDeductDTO) {
+        int count = umsMemberService.deduct(memberDeductDTO.getUserId(), memberDeductDTO.getDeduction());
         if (count > 0) {
             return CommonResult.success(count);
         }

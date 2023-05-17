@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.example.demo.api.CommonResult;
 import com.example.demo.api.ResultCode;
 import com.example.demo.client.FeignProductService;
+import com.example.demo.dto.ProductDeductDTO;
 import com.example.demo.entity.PmsProduct;
 import com.example.demo.feign.ProductClient;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,16 @@ public class FeignProductServiceImpl implements FeignProductService {
     @Override
     public int update(PmsProduct pmsProduct) {
         CommonResult result = productClient.update(pmsProduct);
+        if (Objects.equals(ResultCode.FAILED.getCode(), result.getCode()) ||
+                Objects.isNull(result.getData())) {
+            return 0;
+        }
+        return (int) result.getData();
+    }
+
+    @Override
+    public int deduction(Long productId, Integer count) {
+        CommonResult result = productClient.deduct(new ProductDeductDTO(productId, count));
         if (Objects.equals(ResultCode.FAILED.getCode(), result.getCode()) ||
                 Objects.isNull(result.getData())) {
             return 0;

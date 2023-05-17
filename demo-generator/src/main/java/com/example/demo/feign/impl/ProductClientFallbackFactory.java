@@ -1,6 +1,7 @@
 package com.example.demo.feign.impl;
 
 import com.example.demo.api.CommonResult;
+import com.example.demo.dto.ProductDeductDTO;
 import com.example.demo.entity.PmsProduct;
 import com.example.demo.feign.ProductClient;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,11 @@ public class ProductClientFallbackFactory implements FallbackFactory<ProductClie
 
             @Override
             public CommonResult update(PmsProduct pmsProduct) {
+                return CommonResult.failed("服务降级");
+            }
+
+            @Override
+            public CommonResult deduct(ProductDeductDTO productDeductDTO) {
                 return CommonResult.failed("服务降级");
             }
         };

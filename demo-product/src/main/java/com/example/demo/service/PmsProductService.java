@@ -23,8 +23,18 @@ public interface PmsProductService extends IService<PmsProduct> {
 
     /**
      * 修改商品信息
+     *
      * @param pmsProduct
      * @return
      */
     int updatePmsProduct(PmsProduct pmsProduct);
+
+    /**
+     * 扣减商品库存
+     *
+     * @param productId
+     * @param deduction
+     * @return
+     */
+    int deduct(Long productId, Long deduction);
 }

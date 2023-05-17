@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.entity.PmsProduct;
 import com.example.demo.mapper.PmsProductMapper;
@@ -29,5 +30,15 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     @Override
     public int updatePmsProduct(PmsProduct pmsProduct) {
         return pmsProductMapper.updatePmsProduct(pmsProduct);
+    }
+
+    @Override
+    public int deduct(Long productId, Long deduction) {
+        return pmsProductMapper.update(
+                null,
+                new LambdaUpdateWrapper<PmsProduct>()
+                        .setSql("stock = stock - 1")
+                        .eq(PmsProduct::getId, productId)
+        );
     }
 }

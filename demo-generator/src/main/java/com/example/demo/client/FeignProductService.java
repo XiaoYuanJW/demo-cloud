@@ -25,4 +25,13 @@ public interface FeignProductService {
      * @return
      */
     int update(PmsProduct pmsProduct);
+
+    /**
+     * 扣减商品库存
+     *
+     * @param productId
+     * @param count
+     * @return
+     */
+    int deduction(Long productId, Integer count);
 }

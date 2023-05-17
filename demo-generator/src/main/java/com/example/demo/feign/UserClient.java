@@ -1,16 +1,14 @@
 package com.example.demo.feign;
 
 import com.example.demo.api.CommonResult;
+import com.example.demo.dto.MemberDeductDTO;
 import com.example.demo.entity.UmsMember;
 import com.example.demo.feign.impl.UserClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.math.BigDecimal;
 
 /**
  * Created by YuanJW on 2023/2/21.
@@ -24,5 +22,5 @@ public interface UserClient {
     CommonResult update(@RequestBody UmsMember umsMember);
 
     @PostMapping(value = "deduct")
-    CommonResult deduct(@SpringQueryMap Long memberId, BigDecimal deduction);
+    CommonResult deduct(@RequestBody MemberDeductDTO memberDeductDTO)
 }
