@@ -68,5 +68,10 @@
             <artifactId>seata-all</artifactId>
             <version>1.5.1</version>
         </dependency>
+        <!-- Loadbalancer -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
     </dependencies>
 </project>
