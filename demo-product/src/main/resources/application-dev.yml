@@ -76,3 +76,4 @@ seata:
   service:
     vgroup-mapping: # 事务组与TC服务cluster的映射关系
       fsp_tx_droup: default
+  data-source-proxy-mode: AT # 开启数据源代理的XA模式
