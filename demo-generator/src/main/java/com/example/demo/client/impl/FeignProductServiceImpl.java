@@ -44,7 +44,7 @@ public class FeignProductServiceImpl implements FeignProductService {
     }
 
     @Override
-    public int deduction(Long productId, Integer count) {
+    public int deduct(Long productId, Integer count) {
         CommonResult result = productClient.deduct(new ProductDeductDTO(productId, count));
         if (Objects.equals(ResultCode.FAILED.getCode(), result.getCode()) ||
                 Objects.isNull(result.getData())) {

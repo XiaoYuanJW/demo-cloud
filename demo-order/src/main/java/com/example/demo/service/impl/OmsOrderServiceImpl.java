@@ -57,12 +57,21 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         // 商品信息校验
         PmsProduct pmsProduct = feignProductService.detail(omsOrder.getProductId());
         Assert.notNull(pmsProduct, "商品信息存在异常");
-        // 商品库存扣减
-        feignProductService.deduction(omsOrder.getProductId(), 1);
+
         UmsMember umsMember = feignUserService.detail(omsOrder.getProductId());
         Assert.notNull(umsMember, "会员信息存在异常");
         // 用户余额扣减
-        feignUserService.deduct(omsOrder.getMemberId(), pmsProduct.getPrice());
+        Assert.isTrue(
+                feignUserService.deduct(omsOrder.getMemberId(), pmsProduct.getPrice()) > 0,
+                "用户余额扣减失败"
+        );
+
+        // 商品库存扣减
+        Assert.isTrue(
+                feignProductService.deduct(omsOrder.getProductId(), 1) > 0,
+                "商品库存扣减失败"
+        );
+
         // 新增订单信息
         return omsOrderMapper.insert(omsOrder);
     }

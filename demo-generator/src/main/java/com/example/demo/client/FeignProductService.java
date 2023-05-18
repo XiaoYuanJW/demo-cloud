@@ -33,5 +33,5 @@ public interface FeignProductService {
      * @param count
      * @return
      */
-    int deduction(Long productId, Integer count);
+    int deduct(Long productId, Integer count);
 }

@@ -48,4 +48,8 @@ logging:
   pattern:
     dateformat: yyyy-MM-dd HH:mm:ss
 
-
+jwt:
+  tokenHeader: Authorization # JWT存储的请求头
+  tokenHead: 'Bearer ' # JWT负载中的开头
+  secret: demo-order # JWT加解密使用的密钥
+  expiration: 604800 # JWT的超期限时间(60*60*24*7)
