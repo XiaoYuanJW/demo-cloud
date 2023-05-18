@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,6 +29,7 @@ import java.math.BigDecimal;
 @TableName(value = "account_freeze_tbl")
 @ApiModel(value = "AccountFreezeTbl", description = "用户Ttc金额冻结表")
 public class AccountFreezeTbl {
+    @TableId(value = "xid")
     @NotNull(message = "[事务id]不能为空")
     @ApiModelProperty(value = "事务id")
     private String xid;

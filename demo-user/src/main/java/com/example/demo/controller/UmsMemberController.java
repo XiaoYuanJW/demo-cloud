@@ -4,6 +4,7 @@ import com.example.demo.api.CommonResult;
 import com.example.demo.dto.MemberDeductDTO;
 import com.example.demo.entity.UmsMember;
 import com.example.demo.service.UmsMemberService;
+import com.example.demo.service.UmsMemberTCCService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ import javax.annotation.Resource;
 public class UmsMemberController {
     @Resource
     private UmsMemberService umsMemberService;
+    @Resource
+    private UmsMemberTCCService umsMemberTCCService;
 
     @ApiOperation(value = "新增会员信息")
     @PostMapping(value = "/insert", produces = "application/json;charset=UTF-8")
@@ -50,7 +53,8 @@ public class UmsMemberController {
     @ApiOperation(value = "扣减会员余额")
     @PostMapping(value = "deduct", produces = "application/json;charset=UTF-8")
     public CommonResult deduct(@RequestBody MemberDeductDTO memberDeductDTO) {
-        int count = umsMemberService.deduct(memberDeductDTO.getUserId(), memberDeductDTO.getDeduction());
+        int count = umsMemberTCCService.prepare(memberDeductDTO.getUserId(), memberDeductDTO.getDeduction());
+//        int count = umsMemberService.deduct(memberDeductDTO.getUserId(), memberDeductDTO.getDeduction());
         if (count > 0) {
             return CommonResult.success(count);
         }

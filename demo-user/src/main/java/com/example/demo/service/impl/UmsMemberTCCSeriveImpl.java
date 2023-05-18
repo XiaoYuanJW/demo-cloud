@@ -30,13 +30,13 @@ public class UmsMemberTCCSeriveImpl implements UmsMemberTCCService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void prepare(Long memberId, BigDecimal deduction) {
+    public int prepare(Long memberId, BigDecimal deduction) {
         // 获取XID
         String xid = RootContext.getXID();
         // 防止业务悬挂同时防止冥等性
         AccountFreezeTbl accountFreezeTbl = accountFreezeTblMapper.selectById(xid);
         if (accountFreezeTbl != null) {
-            return;
+            return 0;
         }
         // 扣减会员金额
         umsMemberService.deduct(memberId, deduction);
@@ -47,7 +47,7 @@ public class UmsMemberTCCSeriveImpl implements UmsMemberTCCService {
                 .freezeAmount(deduction)
                 .state(AccountFreezeTbl.State.TRY)
                 .build();
-        accountFreezeTblMapper.insert(accountFreezeTbl);
+        return accountFreezeTblMapper.insert(accountFreezeTbl);
     }
 
     @Override

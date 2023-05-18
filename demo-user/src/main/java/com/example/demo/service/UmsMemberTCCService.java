@@ -21,8 +21,8 @@ public interface UmsMemberTCCService {
      * @param @BusinessActionContextParameter注解中的paramName参数设置参数名，参数可以在二阶段方法中的BusinessActionContext中获取
      */
     @TwoPhaseBusinessAction(name = "prepare", commitMethod = "confirm", rollbackMethod = "cancel")
-    void prepare(@BusinessActionContextParameter(paramName = "memberId") Long memberId,
-                 @BusinessActionContextParameter(paramName = "deduction") BigDecimal deduction);
+    int prepare(@BusinessActionContextParameter(paramName = "memberId") Long memberId,
+                @BusinessActionContextParameter(paramName = "deduction") BigDecimal deduction);
 
     /**
      * @param businessActionContext 上下文（可以传递try方法的参数）

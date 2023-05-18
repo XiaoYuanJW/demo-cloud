@@ -52,7 +52,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
     }
 
     @Override
-    @GlobalTransactional
+    @GlobalTransactional(name = "fsp-create-order", rollbackFor = Exception.class)
     public int insert(OmsOrder omsOrder) {
         // 商品信息校验
         PmsProduct pmsProduct = feignProductService.detail(omsOrder.getProductId());
