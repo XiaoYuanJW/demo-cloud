@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.StockFreezeTblMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.StockFreezeTbl">
+        <id property="xid" column="xid" jdbcType="VARCHAR"/>
+        <result property="productId" column="product_id" jdbcType="BIGINT"/>
+        <result property="freezeStock" column="freeze_stock" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        xid
+        , product_id, freeze_stock, state
+    </sql>
+
+    <sql id="queryCondition">
+        <if test="xid != null">and xid = #{xid,jdbcType=VARCHAR}</if>
+        <if test="productId != null">and product_id = #{productId,jdbcType=BIGINT}</if>
+        <if test="freezeStock != null">and freeze_stock = #{freezeStock,jdbcType=INTEGER}</if>
+        <if test="state != null">and state = #{state,jdbcType=TINYINT}</if>
+    </sql>
+
+    <insert id="saveStockFreezeTbl" keyColumn="xid" keyProperty="xid"
+            parameterType="com.example.demo.entity.StockFreezeTbl" useGeneratedKeys="true">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO stock_freeze_tbl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="xid != null">xid,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="freezeStock != null">freeze_stock,</if>
+            <if test="state != null">state,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="xid != null">#{xid,jdbcType=VARCHAR},</if>
+            <if test="productId != null">#{productId,jdbcType=BIGINT},</if>
+            <if test="freezeStock != null">#{freezeStock,jdbcType=INTEGER},</if>
+            <if test="state != null">#{state,jdbcType=TINYINT},</if>
+        </trim>
+    </insert>
+
+    <select id="getStockFreezeTblById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_freeze_tbl
+        WHERE xid = #{xid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getStockFreezeTbls" parameterType="com.example.demo.entity.StockFreezeTbl" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM stock_freeze_tbl
+        <where>
+            <include refid="queryCondition"></include>
+        </where>
+    </select>
+
+    <delete id="deleteStockFreezeTbls" parameterType="java.util.List">
+        DELETE FROM stock_freeze_tbl
+        <where>
+            xid IN
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+
+    <update id="updateStockFreezeTbl" parameterType="com.example.demo.entity.StockFreezeTbl">
+        UPDATE stock_freeze_tbl
+        <set>
+            <if test="productId != null">product_id = #{productId,jdbcType=BIGINT},</if>
+            <if test="freezeStock != null">freeze_stock = #{freezeStock,jdbcType=INTEGER},</if>
+            <if test="state != null">state = #{state,jdbcType=TINYINT},</if>
+        </set>
+        WHERE xid = #{xid,jdbcType=VARCHAR}
+    </update>
+
+    <select id="countStockFreezeTbl" parameterType="com.example.demo.entity.StockFreezeTbl"
+            resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM stock_freeze_tbl
+        <where>
+            <include refid="queryCondition"></include>
+        </where>
+    </select>
+</mapper>

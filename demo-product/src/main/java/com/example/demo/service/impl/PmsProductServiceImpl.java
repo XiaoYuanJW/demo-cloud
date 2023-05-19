@@ -45,4 +45,17 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
                         .eq(PmsProduct::getId, productId)
         );
     }
+
+    @Override
+    public int refund(Long productId, Integer deduction) {
+        PmsProduct pmsProduct = pmsProductMapper.selectById(productId);
+        Assert.notNull(productId, "商品不存在！");
+        Assert.isTrue(pmsProduct.vaildStock(deduction), "商品库存不足！");
+        return pmsProductMapper.update(
+                null,
+                new LambdaUpdateWrapper<PmsProduct>()
+                        .setSql("stock = stock + " + deduction)
+                        .eq(PmsProduct::getId, productId)
+        );
+    }
 }

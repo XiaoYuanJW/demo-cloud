@@ -37,4 +37,13 @@ public interface PmsProductService extends IService<PmsProduct> {
      * @return
      */
     int deduct(Long productId, Integer deduction);
+
+    /**
+     * 回滚商品库存
+     *
+     * @param productId
+     * @param deduction
+     * @return
+     */
+    int refund(Long productId, Integer deduction);
 }

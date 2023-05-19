@@ -64,10 +64,6 @@ public class UmsMemberTCCSeriveImpl implements UmsMemberTCCService {
     public boolean cancel(BusinessActionContext businessActionContext) {
         String xid = businessActionContext.getXid();
         AccountFreezeTbl accountFreezeTbl = accountFreezeTblMapper.selectById(xid);
-        // 冥等性
-        if (AccountFreezeTbl.State.CANCEL.equals(accountFreezeTbl.getState())) {
-            return true;
-        }
         // 防止空回滚
         if (accountFreezeTbl == null) {
             accountFreezeTbl = AccountFreezeTbl.builder()
@@ -77,6 +73,10 @@ public class UmsMemberTCCSeriveImpl implements UmsMemberTCCService {
                     .state(AccountFreezeTbl.State.CANCEL)
                     .build();
             accountFreezeTblMapper.insert(accountFreezeTbl);
+            return true;
+        }
+        // 冥等处理
+        if (AccountFreezeTbl.State.CANCEL.equals(accountFreezeTbl.getState())) {
             return true;
         }
         // 回滚冻结金额

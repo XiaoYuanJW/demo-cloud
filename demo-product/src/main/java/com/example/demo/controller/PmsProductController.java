@@ -4,6 +4,7 @@ import com.example.demo.api.CommonResult;
 import com.example.demo.dto.ProductDeductDTO;
 import com.example.demo.entity.PmsProduct;
 import com.example.demo.service.PmsProductService;
+import com.example.demo.service.PmsProductStockTCCService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ import javax.annotation.Resource;
 public class PmsProductController {
     @Resource
     private PmsProductService pmsProductService;
+    @Resource
+    private PmsProductStockTCCService pmsProductStockTCCService;
 
     @ApiOperation(value = "新增商品信息")
     @PostMapping(value = "/insert", produces = "application/json;charset=UTF-8")
@@ -50,7 +53,7 @@ public class PmsProductController {
     @ApiOperation(value = "扣减库存")
     @PostMapping(value = "/deduct", produces = "application/json;charset=UTF-8")
     public CommonResult deduct(@RequestBody ProductDeductDTO productDeductDTO) {
-        int count = pmsProductService.deduct(productDeductDTO.getProductId(), productDeductDTO.getDeduction());
+        int count = pmsProductStockTCCService.prepare(productDeductDTO.getProductId(), productDeductDTO.getDeduction());
         if (count > 0) {
             return CommonResult.success(count);
         }
