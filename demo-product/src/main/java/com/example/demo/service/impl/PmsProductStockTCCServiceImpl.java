@@ -27,7 +27,7 @@ public class PmsProductStockTCCServiceImpl implements PmsProductStockTCCService 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int prepare(Long productid, Integer deduction) {
+    public int prepare(Long productId, Integer deduction) {
         // 获取分布式事务Xid
         String xid = RootContext.getXID();
 
@@ -38,11 +38,11 @@ public class PmsProductStockTCCServiceImpl implements PmsProductStockTCCService 
         }
 
         // 扣减库存
-        pmsProductService.deduct(productid, deduction);
+        pmsProductService.deduct(productId, deduction);
         // 冻结库存
         stockFreezeTbl = StockFreezeTbl.builder()
                 .xid(xid)
-                .productId(productid)
+                .productId(productId)
                 .freezeStock(deduction)
                 .state(StockFreezeTbl.state.TRY)
                 .build();
@@ -52,7 +52,7 @@ public class PmsProductStockTCCServiceImpl implements PmsProductStockTCCService 
     @Override
     public boolean commit(BusinessActionContext businessActionContext) {
         // 提交事务：删除冻结金额
-        String xid = RootContext.getXID();
+        String xid = businessActionContext.getXid();
         return stockFreezeTblMapper.deleteById(xid) > 0;
     }
 
@@ -60,7 +60,7 @@ public class PmsProductStockTCCServiceImpl implements PmsProductStockTCCService 
     @Transactional(rollbackFor = Exception.class)
     public boolean rollback(BusinessActionContext businessActionContext) {
         // 获取分布式事务Xid
-        String xid = RootContext.getXID();
+        String xid = businessActionContext.getXid();
 
         // 防空回滚
         StockFreezeTbl stockFreezeTbl = stockFreezeTblMapper.selectById(xid);

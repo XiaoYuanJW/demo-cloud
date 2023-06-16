@@ -44,9 +44,12 @@ spring:
     nacos:
       discovery:
         server-addr: 1.117.34.49:8848 #配置Nacos地址
-#        cluster-name: SHANGHAI
-#        namespace: 3c30a7da-2359-490d-90f3-c67f0f64d477 # namespace 命名空间ID
-#        ephemeral: true # 设置是否为临时实例
+    #        cluster-name: SHANGHAI
+    #        namespace: 3c30a7da-2359-490d-90f3-c67f0f64d477 # namespace 命名空间ID
+    #        ephemeral: true # 设置是否为临时实例
+    sentinel:
+      transport:
+        dashboard: 1.117.34.49:8858 # 配置 sentinel dashboard地址
 
 logging:
   level:

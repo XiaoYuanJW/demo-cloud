@@ -16,12 +16,12 @@ public interface PmsProductStockTCCService {
     /**
      * 第一阶段【尝试】方法
      *
-     * @param productid
+     * @param productId
      * @param deduction
      * @return
      */
     @TwoPhaseBusinessAction(name = "prepare", commitMethod = "commit", rollbackMethod = "rollback")
-    int prepare(@BusinessActionContextParameter(paramName = "productId") Long productid,
+    int prepare(@BusinessActionContextParameter(paramName = "productId") Long productId,
                 @BusinessActionContextParameter(paramName = "deduction") Integer deduction);
 
     /**
