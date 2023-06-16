@@ -1,7 +1,5 @@
 package com.example.demo.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -32,9 +30,9 @@ import java.io.Serializable;
 @TableName(value = "stock_freeze_tbl")
 @ApiModel(value = "StockFreezeTbl", description = "商品库存冻结")
 public class StockFreezeTbl implements Serializable {
-    @TableField(exist = false)
+
     private static final long serialVersionUID = 1L;
-    @TableId(value = "xid")
+
     @NotBlank(message = "[事务id]不能为空")
     @Size(max = 120, message = "编码长度不能超过120")
     @Length(max = 120, message = "编码长度不能超过120")

@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,8 +9,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -29,8 +31,12 @@ import java.math.BigDecimal;
 @TableName(value = "account_freeze_tbl")
 @ApiModel(value = "AccountFreezeTbl", description = "用户Ttc金额冻结表")
 public class AccountFreezeTbl {
-    @TableId(value = "xid")
-    @NotNull(message = "[事务id]不能为空")
+
+    private static final long serialVersionUID = 1L;
+
+    @NotBlank(message = "[事务id]不能为空")
+    @Size(max = 120, message = "编码长度不能超过120")
+    @Length(max = 120, message = "编码长度不能超过120")
     @ApiModelProperty(value = "事务id")
     private String xid;
     @NotNull(message = "[会员id]不能为空")
